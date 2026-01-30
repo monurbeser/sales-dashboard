@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SalesManager {
+  id        String       @id @default(uuid()) @db.Uuid
+  fullName  String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  targets   SalesTarget[]
+  actuals   SalesActual[]
+}
+
+model SalesTarget {
+  id        String       @id @default(uuid()) @db.Uuid
+  managerId String       @db.Uuid
+  year      Int
+  month     Int
+  amount    Decimal      @db.Numeric(14, 2)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  manager   SalesManager @relation(fields: [managerId], references: [id], onDelete: Cascade)
+
+  @@unique([managerId, year, month])
+  @@index([year, month])
+}
+
+model SalesActual {
+  id        String       @id @default(uuid()) @db.Uuid
+  managerId String       @db.Uuid
+  year      Int
+  month     Int
+  amount    Decimal      @db.Numeric(14, 2)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  manager   SalesManager @relation(fields: [managerId], references: [id], onDelete: Cascade)
+
+  @@unique([managerId, year, month])
+  @@index([year, month])
+}
