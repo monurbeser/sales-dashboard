@@ -1,3 +1,9 @@
+export const dynamic = 'force-dynamic'
+
+import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+
+// ... geri kalan kod aynı kalacak
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
